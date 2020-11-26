@@ -21,7 +21,7 @@ def read_data_into_dataframe():
     con=create_engine('sqlite:///..//input//MultiSpecialtyHospital.db').connect()
     df=pd.read_sql_table('record',con)
     con.close()
-    #print(df)
+    
     segment_database_into_parts(df)
     
 
@@ -29,8 +29,6 @@ def read_data_into_dataframe():
 #ETL phase
 #This is the segmentation of the parent table into small tables based on countries
 def segment_database_into_parts(df):
-    #print(df.columns)
-    
     
     #parsing strings to dates as python reads dates at strings when accepted as a dataframe
     df['Open_Date']=pd.to_datetime(df['Open_Date'])
@@ -40,7 +38,6 @@ def segment_database_into_parts(df):
     #print(df.describe(include='all'))   #this can describe attributes about data
    
     country_list=list(set(df['Country'].to_list()))
-    #print(country_list)
     engine=create_engine('sqlite:///..//output//MultiSpecialtyHospitalUpdated.db',echo=True)
     con=engine.connect()
     
@@ -54,14 +51,16 @@ def segment_database_into_parts(df):
         print(df1)
       
         #data warehousing phase
+        
         #output to csv
         df1.to_csv(r'..\output\csv\Table_%s.csv'%i,index=False)
+        
         #output to sql
-        # sqlite_table = "Table_%s"%i
-        # df1.to_sql(sqlite_table,con, if_exists='replace')
+        sqlite_table = "Table_%s"%i
+        df1.to_sql(sqlite_table,con, if_exists='replace')
     
     con.close()
-    #check_final_result(engine)    
+    check_final_result(engine)    
 
 
 #testing phase
