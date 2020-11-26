@@ -3,7 +3,7 @@
 NOTE: The code is written in python along with SQL integration
 
 The code solves the problem given in the pdf using data integration and pipeline life cycle along with TDD.
-the phases in the code are marked using comments
+The phases in the code are marked using comments
 
 1. Creation phase
 2. Data capture
